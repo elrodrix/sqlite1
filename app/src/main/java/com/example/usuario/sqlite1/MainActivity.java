@@ -64,17 +64,22 @@ public class MainActivity extends ActionBarActivity {
         SQLiteDatabase db = admin.getWritableDatabase();
         String dni = eDni.getText().toString();
 
-        //devuelve 0 o 1
-        Cursor fila = db.rawQuery("SELECT nombre, colegio, nmesa FROM votantes WHERE dni=" + dni, null);
+        if (!dni.matches("")){
+            //devuelve 0 o 1
 
-        if (fila.moveToFirst()){
-            eNom.setText(fila.getString(0));
-            eCol.setText(fila.getString(1));
-            eMesa.setText(fila.getString(2));
+            Cursor fila = db.rawQuery("SELECT nombre, colegio, nmesa FROM votantes WHERE dni=" + dni, null);
+
+            if (fila.moveToFirst()){
+                eNom.setText(fila.getString(0));
+                eCol.setText(fila.getString(1));
+                eMesa.setText(fila.getString(2));
+            }else{
+                Toast.makeText(this, "No existe DNI", Toast.LENGTH_SHORT).show();
+            }
+            db.close();
         }else{
-            Toast.makeText(this, "No existe DNI", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Debe ingresar DNI", Toast.LENGTH_SHORT).show();
         }
-        db.close();
     }
 
 
